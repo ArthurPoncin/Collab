@@ -1,0 +1,37 @@
+# Régénère le CHANGELOG.md automatiquement à chaque tag de version (v*)
+# et le commit sur la branche principale.
+name: Generate Changelog
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # historique complet requis pour parser les tags
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate CHANGELOG.md
+        run: python scripts/generate_changelog.py
+
+      - name: Commit changelog
+        run: |
+          git config user.name "Arthur Poncin"
+          git config user.email "arthur.poncin@sixense-group.com"
+          git checkout main
+          git add CHANGELOG.md
+          git diff --cached --quiet || git commit -m "chore(release): mise a jour du changelog pour ${GITHUB_REF_NAME}"
+          git push origin main
