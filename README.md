@@ -8,7 +8,7 @@ d'une destination, EcoRide croise les conditions **météo** et l'état du
 **trafic urbain** pour recommander le mode de transport optimal, avec une
 estimation du temps de trajet et de l'empreinte carbone.
 
-Version actuelle : 2.1.0
+Version actuelle : 2.2.0
 
 Auteur : Arthur Poncin
 

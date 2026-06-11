@@ -4,7 +4,7 @@ from typing import Dict, Optional
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 
-app = FastAPI(title="EcoRide API", version="2.1.0")
+app = FastAPI(title="EcoRide API", version="2.2.0")
 
 # --- SIMULATION DE BASE DE DONNÉES / CACHE IN-MEMORY ---
 # Structure : { "ville": {"data": ..., "timestamp": ...} }
@@ -69,12 +69,12 @@ def verify_api_key(api_key: Optional[str] = None):
 
 
 # --- ENDPOINTS ---
-@app.get("/health")
+@app.get("/health", tags=["Monitoring"])
 def health_check():
     return {"status": "healthy", "timestamp": time.time()}
 
 
-@app.post("/api/v1/route", response_model=RouteResponse)
+@app.post("/api/v1/route", response_model=RouteResponse, tags=["Recommandation"])
 async def get_recommendation(request: RouteRequest, token: str = Depends(verify_api_key)):
     city = request.city
     current_time = time.time()
